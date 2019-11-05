@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="fc320752-2bee-4ef9-b69e-f660b3e790f7" name="fugitivethegame" url="http://fugitivethegame.online">
+        <fileTransfer host="fugitivethegame.online" port="22" rootFolder="/home/fugitivethegame/www" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
