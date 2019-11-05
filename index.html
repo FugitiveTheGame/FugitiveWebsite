@@ -6,12 +6,20 @@
 -->
 <html>
 	<head>
-		<title>Spectral by HTML5 UP</title>
+		<title>Fugitive</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="shortcut icon" href="/favicon.ico" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+		<meta property="og:title" content="Fugitive"/>
+		<meta property="og:description"
+			  content="An objective based, multiplayer, hide and seek game. Free and open source, avalible on every platform under the sun."/>
+		<meta property="og:url" content="http://fugitivethegame.online/"/>
+		<meta property="og:image" content="http://fugitivethegame.online/images/banner.jpg"/>
+		<meta property="og:locale" content="en_US"/>
+		<meta property="og:site_name" content="Fugitive"/>
 	</head>
 	<body class="landing is-preload">
 
@@ -27,11 +35,14 @@
 									<a href="#menu" class="menuToggle"><span>Menu</span></a>
 									<div id="menu">
 										<ul>
-											<li><a href="index.html">Home</a></li>
-											<li><a href="generic.html">Generic</a></li>
-											<li><a href="elements.html">Elements</a></li>
-											<li><a href="#">Sign Up</a></li>
-											<li><a href="#">Log In</a></li>
+											<li><a href="#banner" class="more scrolly">Home</a></li>
+											<li><a href="#about" class="more scrolly">About</a></li>
+											<li><a href="/game">Play</a></li>
+											<li><a href="#download" class="more scrolly">Download</a></li>
+											<li><a href="https://github.com/FugitiveTheGame" target="_blank">GitHub</a>
+											</li>
+											<li><em><a href="https://godotengine.org/" target="_blank">Made with
+												Godot</a></em></li>
 										</ul>
 									</div>
 								</li>
@@ -42,91 +53,99 @@
 				<!-- Banner -->
 					<section id="banner">
 						<div class="inner">
-							<h2>Spectral</h2>
-							<p>Another fine responsive<br />
-							site template freebie<br />
-							crafted by <a href="http://html5up.net">HTML5 UP</a>.</p>
+							<h2>Fugitive</h2>
+							<p>A multiplayer,<br/>
+								objective based,<br/>
+								hide and seek game.</p>
 							<ul class="actions special">
-								<li><a href="#" class="button primary">Activate</a></li>
+								<li><a href="/game/" class="button primary">Play Now</a></li>
 							</ul>
 						</div>
-						<a href="#one" class="more scrolly">Learn More</a>
+						<a href="#download" class="more scrolly">Learn More</a>
 					</section>
 
 				<!-- One -->
-					<section id="one" class="wrapper style1 special">
+				<section id="download" class="wrapper style1 special">
 						<div class="inner">
 							<header class="major">
-								<h2>Arcu aliquet vel lobortis ata nisl<br />
-								eget augue amet aliquet nisl cep donec</h2>
-								<p>Aliquam ut ex ut augue consectetur interdum. Donec amet imperdiet eleifend<br />
-								fringilla tincidunt. Nullam dui leo Aenean mi ligula, rhoncus ullamcorper.</p>
+								<h2>Play on any platform</h2>
+								<p><a href="/download/windows/Fugitive.zip">Windows</a> |
+									<a href="/download/linux/Fugitive.zip">Linux</a> |
+									<a href="/download/osx/Fugitive.zip">OS X</a> |
+									<a href="/download/android/fugitive.apk">Android</a> |
+									<a href="#" onclick="alert('Coming Soon...')">iOS</a></p>
 							</header>
-							<ul class="icons major">
-								<li><span class="icon fa-gem major style1"><span class="label">Lorem</span></span></li>
-								<li><span class="icon fa-heart major style2"><span class="label">Ipsum</span></span></li>
-								<li><span class="icon solid fa-code major style3"><span class="label">Dolor</span></span></li>
-							</ul>
 						</div>
 					</section>
 
 				<!-- Two -->
 					<section id="two" class="wrapper alt style2">
 						<section class="spotlight">
-							<div class="image"><img src="images/pic01.jpg" alt="" /></div><div class="content">
-								<h2>Magna primis lobortis<br />
-								sed ullamcorper</h2>
-								<p>Aliquam ut ex ut augue consectetur interdum. Donec hendrerit imperdiet. Mauris eleifend fringilla nullam aenean mi ligula.</p>
+							<div class="image"><img src="images/pic01.jpg" alt="Cop found a Fugitive"/></div>
+							<div class="content">
+								<h2>As a Cop</h2>
+								<p>Your job is to hunt down the Fugitives and bring them to justice. It's a dark night
+									out, and they are good at hiding, so you'll have to get them in your flashlight to
+									see them. Luckily you've got your trusty cop car. You can quickly patrol the
+									streets, picking up your fellow cops and dropping them off strategically around the
+									city.</p>
 							</div>
 						</section>
 						<section class="spotlight">
-							<div class="image"><img src="images/pic02.jpg" alt="" /></div><div class="content">
-								<h2>Tortor dolore feugiat<br />
-								elementum magna</h2>
-								<p>Aliquam ut ex ut augue consectetur interdum. Donec hendrerit imperdiet. Mauris eleifend fringilla nullam aenean mi ligula.</p>
+							<div class="image"><img src="images/pic02.jpg" alt="Fugitive hiding"/></div>
+							<div class="content">
+								<h2>As a Fugitive</h2>
+								<p>You're on the run, but Johnny law is in hot pursuit. You'll have a few seconds head
+									start, stay out of sight! You have to get to the safe zone to escape. But if the
+									Cops see you, you're as good as dead.</p>
 							</div>
 						</section>
 						<section class="spotlight">
-							<div class="image"><img src="images/pic03.jpg" alt="" /></div><div class="content">
-								<h2>Augue eleifend aliquet<br />
-								sed condimentum</h2>
-								<p>Aliquam ut ex ut augue consectetur interdum. Donec hendrerit imperdiet. Mauris eleifend fringilla nullam aenean mi ligula.</p>
+							<div class="image"><img src="images/pic03.jpg" alt="Great for LAN parties"/></div>
+							<div class="content">
+								<h2>Great for LAN parties</h2>
+								<p>Fugitive was designed with LAN parties in mind.</p>
 							</div>
 						</section>
 					</section>
 
 				<!-- Three -->
-					<section id="three" class="wrapper style3 special">
+				<section id="about" class="wrapper style3 special">
 						<div class="inner">
 							<header class="major">
-								<h2>Accumsan mus tortor nunc aliquet</h2>
-								<p>Aliquam ut ex ut augue consectetur interdum. Donec amet imperdiet eleifend<br />
-								fringilla tincidunt. Nullam dui leo Aenean mi ligula, rhoncus ullamcorper.</p>
+								<h2>A simple game</h2>
+								<p>There's not a lot to Fugitive, here's what you need to know.</p>
 							</header>
 							<ul class="features">
-								<li class="icon fa-paper-plane">
-									<h3>Arcu accumsan</h3>
-									<p>Augue consectetur sed interdum imperdiet et ipsum. Mauris lorem tincidunt nullam amet leo Aenean ligula consequat consequat.</p>
+								<li class="icon solid fa-car">
+									<h3>The Cop Car</h3>
+									<p>Cops have a car they can drive around. Multiple cops can get in the car at
+										once.</p>
 								</li>
-								<li class="icon solid fa-laptop">
-									<h3>Ac Augue Eget</h3>
-									<p>Augue consectetur sed interdum imperdiet et ipsum. Mauris lorem tincidunt nullam amet leo Aenean ligula consequat consequat.</p>
+								<li class="icon solid fa-lightbulb">
+									<h3>Street Lights</h3>
+									<p>Fugitives watch out! Street lights will reveal you to cops even if they aren't
+										looking at you!</p>
 								</li>
-								<li class="icon solid fa-code">
-									<h3>Mus Scelerisque</h3>
-									<p>Augue consectetur sed interdum imperdiet et ipsum. Mauris lorem tincidunt nullam amet leo Aenean ligula consequat consequat.</p>
+								<li class="icon solid fa-wave-square">
+									<h3>Motion Sensors</h3>
+									<p>Some houses have motion sensitive lights on them, walking across their drive way
+										will trigger them.</p>
 								</li>
-								<li class="icon solid fa-headphones-alt">
-									<h3>Mauris Imperdiet</h3>
-									<p>Augue consectetur sed interdum imperdiet et ipsum. Mauris lorem tincidunt nullam amet leo Aenean ligula consequat consequat.</p>
+								<li class="icon solid fa-plus">
+									<h3>Score</h3>
+									<p>Making it to the safe zone is the best way to score points. Capturing fugitives
+										is okay too, but won't net you as many points.</p>
 								</li>
-								<li class="icon fa-heart">
-									<h3>Aenean Primis</h3>
-									<p>Augue consectetur sed interdum imperdiet et ipsum. Mauris lorem tincidunt nullam amet leo Aenean ligula consequat consequat.</p>
+								<li class="icon solid fa-running">
+									<h3>Sprinting</h3>
+									<p>A short burst of speed, you must stop moving completely for your Stamina to
+										refill. Cops get all their Stamina back just by getting in the car though.</p>
 								</li>
-								<li class="icon fa-flag">
-									<h3>Tortor Ut</h3>
-									<p>Augue consectetur sed interdum imperdiet et ipsum. Mauris lorem tincidunt nullam amet leo Aenean ligula consequat consequat.</p>
+								<li class="icon solid fa-clock">
+									<h3>Head Start</h3>
+									<p>Fugitive's get a head start, try to get as far as possible, or trick the cops by
+										hiding close by. It's your choice.</p>
 								</li>
 							</ul>
 						</div>
@@ -136,12 +155,14 @@
 					<section id="cta" class="wrapper style4">
 						<div class="inner">
 							<header>
-								<h2>Arcue ut vel commodo</h2>
-								<p>Aliquam ut ex ut augue consectetur interdum endrerit imperdiet amet eleifend fringilla.</p>
+								<h2>We're Open Source!</h2>
+								<p>Fugitive is completely open source, and made with the awesome Open Source game
+									engine: <strong>Godot</strong></p>
 							</header>
 							<ul class="actions stacked">
-								<li><a href="#" class="button fit primary">Activate</a></li>
-								<li><a href="#" class="button fit">Learn More</a></li>
+								<li><a href="https://github.com/FugitiveTheGame" class="button fit primary">GitHub</a>
+								</li>
+								<li><a href="https://godotengine.org/" class="button fit primary">Godot</a></li>
 							</ul>
 						</div>
 					</section>
@@ -149,14 +170,14 @@
 				<!-- Footer -->
 					<footer id="footer">
 						<ul class="icons">
-							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-							<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
-							<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+							<li><a href="https://github.com/FugitiveTheGame" class="icon brands fa-github"><span
+									class="label">GitHub</span></a></li>
+							<li><a href="https://godotengine.org/" class="icon solid fa-code"><span
+									class="label">Godot</span></a></li>
 						</ul>
 						<ul class="copyright">
-							<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							<li><em>Fugitive</em></li>
+							<li>Website Design: <a href="http://html5up.net">HTML5 UP</a></li>
 						</ul>
 					</footer>
 
