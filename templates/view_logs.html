@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<style>
+	textarea {
+		width: 100%;
+		height: 80vh;
+		box-sizing: border-box;
+	}
+</style>
+
+<script>
+	function copy_logs() {
+        $('#logs').select();
+
+        //el.setSelectionRange(0, 99999); /*For mobile devices*/
+        document.execCommand('copy');
+
+        alert('Logs copied to clip board');
+    }
+</script>
+{% endblock %}
+
+{% block content %}
+<br />
+<a href="viewfeedback">Go to Feedback</a>
+<br />
+<button onclick="copy_logs()">Copy</button>
+<br />
+<textarea id="logs">
+	{{logs}}
+</textarea>
+{% endblock %}

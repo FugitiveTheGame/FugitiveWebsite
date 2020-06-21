@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/management/css/gamestats.css">
+{% endblock %}
+
+{% block content %}
+<h1>Game Server Stats</h1>
+<div class="grid-container">
+	<div class="grid-item">
+		<div class="box-container">
+			<h2>Servers</h2>
+			<strong>Online:</strong> {{stats.servers_online}}<br />
+			<strong>In-Game:</strong> {{stats.servers_in_game}}
+		</div>
+	</div>
+
+	<div class="grid-item">
+		<div class="box-container">
+			<h2>Games Played</h2>
+			<strong>Total:</strong> {{stats.total_games_played}}<br />
+			<strong>Valid:</strong> {{stats.valid_games}}
+		</div>
+	</div>
+
+	<div class="grid-item">
+		<div class="box-container">
+			<h2>Win Percentage</h2>
+			<strong>Cops:</strong> {{stats.cop_win_percentage}}%<br />
+			<strong>Fugitives:</strong> {{stats.fugitive_win_percentage}}%<br />
+		</div>
+	</div>
+
+	<div class="grid-item">
+		<div class="box-container">
+			<h2>Game Info</h2>
+			<strong>Avg. Players:</strong> {{stats.average_num_players}}<br />
+			<strong>Avg. Length:</strong> {{stats.average_game_length}}<br />
+		</div>
+	</div>
+</div>
+{% endblock %}

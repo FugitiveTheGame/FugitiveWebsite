@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+
+{% block head %}
+
+<script>
+    function copy_logs(logId) {
+        $.get("/management/actions?action=logs&id=" + logId, function (data, status) {
+            copy_to_clipboard(data.logs);
+        });
+    }
+
+    function copy_to_clipboard(text) {
+        const el = document.createElement('textarea');
+        el.value = text;
+        document.body.appendChild(el);
+        el.select();
+
+        //el.setSelectionRange(0, 99999); /*For mobile devices*/
+        document.execCommand('copy');
+        document.body.removeChild(el);
+
+        alert("Copied to clipboard");
+    }
+
+    function mark_read(feedback_id) {
+        if (confirm("Mark " + feedback_id + " as Read?") === true) {
+            $.get("/management/actions?action=markread&id=" + feedback_id, function (data, status) {
+                location.reload();
+            });
+        }
+    }
+
+    function mark_unread(feedback_id) {
+        $.get("/management/actions?action=markunread&id=" + feedback_id, function (data, status) {
+            location.reload();
+        });
+    }
+
+    function delete_feedback(feedback_id) {
+        if (confirm("Delete Item " + feedback_id + "?") === true) {
+            $.get("/management/actions?action=delete&id=" + feedback_id, function (data, status) {
+                location.reload();
+            });
+        }
+    }
+</script>
+
+<link rel="stylesheet" type="text/css" href="/management/css/view_feedback.css">
+{% endblock %}
+
+{% block content %}
+<h1>Feedback</h1>
+<div class="table-wrapper">
+	<table class="fl-table">
+		<thead>
+		<tr>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Date</th>
+			<th>New</th>
+			<th>Logs</th>
+			<th>Delete</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for response in feedback %}
+		<tr class="{{ response.crash_detected == true ? 'crash-detected' }} {{ response.new == 1 ? 'new-report' }}">
+			<td><strong>{{ response.id }}</strong></td>
+			<td>{{ response.name }}</td>
+			<td>{{ response.description }}</td>
+			<td>{{ response.date_reported|date("m/d/Y") }}</td>
+			<td>
+				{% if response.new == 1 %}
+				<button onclick="mark_read('{{ response.id }}')">Mark Read</button>
+				{% else %}
+				<button class="subtle" onclick="mark_unread('{{ response.id }}')">Mark Unread</button>
+				{% endif %}
+			</td>
+			<td>
+				{% if response.has_logs == true %}
+				<button onclick="copy_logs('{{ response.id }}')">Copy</button>
+				<button onclick="location.href='view_logs?id={{ response.id }}'">View</button>
+				{% else %}
+				<em>[no logs]</em>
+				{% endif %}
+			</td>
+			<td>
+				<button class="destructive-button" onclick="delete_feedback('{{ response.id }}')">DELETE</button>
+			</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %}

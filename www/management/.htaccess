@@ -1,0 +1,4 @@
+Authtype Basic
+AuthName "Do I know you?"
+AuthUserFile /home/website/.htpasswd
+Require valid-user

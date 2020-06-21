@@ -1,0 +1,10 @@
+div.large_box {
+
+}
+
+@media (max-width: 767px) {
+    div.large_box {
+        width: 90vw;
+        margin: auto;
+    }
+}
