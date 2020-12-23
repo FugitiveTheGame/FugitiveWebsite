@@ -1,10 +1,30 @@
 {% extends "layout.html" %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="/management/css/gamestats.css">
+<link rel="stylesheet" type="text/css" href="gamestats.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+<script src="gamestats.js"></script>
+
+<script>
+	function prepareCharts() {
+        let gamesPerDayLabels = [ {% for label in chart.chart_x_axis_labels %}"{{label}}", {% endfor %} ];
+        let gamesPerDayData = [{% for games in chart.chart_games_per_day %}{{games}}, {% endfor %}];
+
+        prepareGamesPerDay(gamesPerDayLabels, gamesPerDayData);
+
+        let winLabels = ["Cops", "Fugitives"];
+        let winData = [{{stats.cop_win_percentage}}, {{stats.fugitive_win_percentage}}];
+        prepareWinChart(winLabels, winData);
+	}
+
+    window.onload=prepareCharts;
+</script>
 {% endblock %}
 
 {% block content %}
+
 <h1>Game Server Stats</h1>
 <div class="grid-container">
 	<div class="grid-item">
@@ -20,14 +40,22 @@
 			<h2>Games Played</h2>
 			<strong>Total:</strong> {{stats.total_games_played}}<br />
 			<strong>Valid:</strong> {{stats.valid_games}}
+			<h2>This Week:</h2>
+			<strong>Total:</strong> {{stats.week_games_played}}<br />
+			<strong>Valid:</strong> {{stats.week_valid_games}}
+			<h2>Today:</h2>
+			<strong>Total:</strong> {{stats.today_games_played}}<br />
+			<strong>Valid:</strong> {{stats.today_valid_games}}
 		</div>
 	</div>
 
 	<div class="grid-item">
 		<div class="box-container">
 			<h2>Win Percentage</h2>
-			<strong>Cops:</strong> {{stats.cop_win_percentage}}%<br />
-			<strong>Fugitives:</strong> {{stats.fugitive_win_percentage}}%<br />
+			<!--<strong>Cops:</strong> {{stats.cop_win_percentage}}%
+			<strong>Fugitives:</strong> {{stats.fugitive_win_percentage}}%<br />-->
+
+			<canvas id="win-chart" style="max-width:300px; margin: auto;"></canvas>
 		</div>
 	</div>
 
@@ -39,4 +67,13 @@
 		</div>
 	</div>
 </div>
+
+<div id="game-chart-container">
+	<div class="box-container">
+		<h2>Chart</h2>
+		<canvas id="game-chart"></canvas>
+	</div>
+</div>
+
+<h2>{{current_time_gmt}} UTC</h2>
 {% endblock %}
