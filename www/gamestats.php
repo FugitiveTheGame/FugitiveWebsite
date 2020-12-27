@@ -200,22 +200,24 @@ function getDaysSinceZero($timestamp)
 
 function getGamesPerDay($games)
 {
-	$numGames = count($games);
+	$numGames = count( $games );
 	$firstGameDate = $games[0]->timestamp;
-	$lastGameDate = $games[$numGames-1]->timestamp;
+	$lastGameDate = $games[ $numGames - 1 ]->timestamp;
+	$todayDate = mktime();
 
-	$firstDay = getDaysSinceZero($firstGameDate);
-	$lastDay = getDaysSinceZero($lastGameDate);
+	$firstDay = getDaysSinceZero( $firstGameDate );
+	$lastDay = getDaysSinceZero( $lastGameDate );
+	$todayDay = getDaysSinceZero( $todayDate );
 
-	$numDays = ($lastDay - $firstDay)+1;
+	$numDays = ($todayDay - $firstDay) + 1;
 
 	$labels = [];
 
 	$gamesPerDay = [];
-	for($ii = 0; $ii<$numDays; ++$ii)
+	for( $ii = 0; $ii < $numDays; ++$ii )
 	{
-		$gamesPerDay[$firstDay + $ii] = 0;
-		$labels[] = xAxisLabel($firstGameDate + ($ii * 24 * 60 * 60));
+		$gamesPerDay[ $firstDay + $ii ] = 0;
+		$labels[] = xAxisLabel( $firstGameDate + ($ii * 24 * 60 * 60) );
 	}
 
 	$curDay = -1;
