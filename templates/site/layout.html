@@ -69,14 +69,20 @@
 			<!-- Footer -->
 			<footer id="footer">
 				<div class="inner">
+					{#
+						One footer for every page, so these point at the studio
+						rather than at either game: the org, the itch profile and
+						the Play developer listing all cover both titles.
+					#}
 					<ul class="icons">
-{% block footer_icons %}
 						<li><a href="https://github.com/FugitiveTheGame" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
 						<li><a href="https://discord.gg/2qk2Spe" class="icon brands fa-discord"><span class="label">Discord</span></a></li>
-						<li><a href="https://stumpy-dog-studios.itch.io/fugitive" class="icon brands fa-itch-io"><span class="label">itch.io</span></a></li>
+						<li><a href="https://stumpy-dog-studios.itch.io/" class="icon brands fa-itch-io"><span class="label">itch.io</span></a></li>
+						{# Steam is hidden until the Fugitive 3D store page stops saying "Coming soon".
 						<li><a href="https://store.steampowered.com/app/1526650/Fugitive_3D/" class="icon brands fa-steam"><span class="label">Steam</span></a></li>
+						#}
+						<li><a href="https://play.google.com/store/apps/developer?id=Dark+Rock+Studios" class="icon brands fa-google-play"><span class="label">Google Play</span></a></li>
 						<li><a href="https://godotengine.org/" class="icon solid fa-code"><span class="label">Made with Godot</span></a></li>
-{% endblock %}
 					</ul>
 					<ul class="copyright">
 						<li>Stumpy Dog Studios</li>
