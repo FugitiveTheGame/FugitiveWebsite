@@ -31,7 +31,13 @@ sudo -u fugitive /home/fugitive/deploy/redeploy.sh --force   # deploy by hand
 ```
 
 `redeploy.sh` re-runs `composer install` only when `composer.json` changes, and
-`--exclude`s `vendor/` and `keys.json` so `rsync --delete` cannot remove them.
+`--exclude`s `vendor/`, `var/` and `keys.json` so `rsync --delete` cannot remove
+them.
+
+**The running `redeploy.sh` is a copy**, installed by `install.sh` and owned by
+root. Editing `deploy/redeploy.sh` in the repo does not change what runs; a
+deploy will not pick up its own new version. To update it, re-run `install.sh`,
+which reinstalls the script from the staged kit and then forces a deploy.
 
 ## Database
 

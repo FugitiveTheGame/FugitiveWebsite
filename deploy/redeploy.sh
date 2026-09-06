@@ -52,9 +52,15 @@ log "deploying ${deployed:0:8} -> ${target:0:8}"
 git -C "$REPO_DIR" reset --hard "origin/$BRANCH"
 git -C "$REPO_DIR" clean -fd
 
-# Refuse to deploy something that isn't the site.
-test -f "$REPO_DIR/www/index.html"
+# Refuse to deploy something that isn't the site. Deliberately not a named
+# file: this guard used to be "test -f www/index.html", which silently blocked
+# every deploy the moment the pages moved to Twig and became index.php.
+test -d "$REPO_DIR/www"
 test -f "$REPO_DIR/composer.json"
+if ! compgen -G "$REPO_DIR/www/index.*" >/dev/null; then
+	log "no www/index.* in the checkout, refusing to deploy"
+	exit 1
+fi
 
 composer_before=""
 if [[ -f "$APP_DIR/composer.json" ]]; then
