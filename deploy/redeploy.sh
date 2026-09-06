@@ -61,8 +61,8 @@ if [[ -f "$APP_DIR/composer.json" ]]; then
 	composer_before="$(sha256sum "$APP_DIR/composer.json" | cut -d' ' -f1)"
 fi
 
-# No --delete-excluded here: vendor/ and keys.json exist only in the app dir,
-# and stripping them would take the site down.
+# No --delete-excluded here: vendor/, var/ and keys.json exist only in the app
+# dir, and stripping them would take the site down.
 rsync -a --delete --itemize-changes \
 	--exclude='.git/' \
 	--exclude='.github/' \
@@ -70,11 +70,16 @@ rsync -a --delete --itemize-changes \
 	--exclude='.claude/' \
 	--exclude='deploy/' \
 	--exclude='vendor/' \
+	--exclude='var/' \
 	--exclude='keys.json' \
 	--exclude='.editorconfig' \
 	--exclude='.gitattributes' \
 	--exclude='.gitignore' \
 	"$REPO_DIR/" "$APP_DIR/"
+
+# Twig compiles templates into here at runtime. Stale entries are keyed by
+# template content, so a deploy just leaves them orphaned rather than stale.
+mkdir -p "$APP_DIR/var/cache/twig"
 
 composer_after="$(sha256sum "$APP_DIR/composer.json" | cut -d' ' -f1)"
 

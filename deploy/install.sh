@@ -77,6 +77,7 @@ fi
 step "Creating $DEPLOY_DIR and $APP_DIR"
 install -d -o "$SITE_USER" -g "$SITE_USER" -m 0755 "$DEPLOY_DIR"
 install -d -o "$SITE_USER" -g "$SITE_USER" -m 0750 "$APP_DIR"
+install -d -o "$SITE_USER" -g "$SITE_USER" -m 0755 "$APP_DIR/var/cache/twig"
 install -o "$SITE_USER" -g "$SITE_USER" -m 0750 "$SRC_DIR/redeploy.sh" "$DEPLOY_DIR/redeploy.sh"
 install -o "$SITE_USER" -g "$SITE_USER" -m 0644 \
 	"$SRC_DIR/server-README.md" "/home/$SITE_USER/README.md"

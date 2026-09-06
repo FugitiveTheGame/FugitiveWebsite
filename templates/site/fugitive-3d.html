@@ -1,60 +1,13 @@
-<!DOCTYPE HTML>
-<!--
-	Spectral by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html lang="en">
-	<head>
-		<title>Fugitive 3D</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="description" content="Fugitive 3D is a free, open source multiplayer hide and seek game. VR and flat players share the same match, with positional voice chat and end-of-round replays. Windows, macOS, Linux, Android and VR." />
-		<link rel="icon" href="/favicon.ico" sizes="any" />
-		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300..800;1,400&family=Overpass+Mono:wght@400;600&display=swap" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<link rel="stylesheet" href="assets/css/fugitive.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+{% extends "site/layout.html" %}
 
-		<meta property="og:title" content="Fugitive 3D" />
-		<meta property="og:description" content="Multiplayer hide and seek, in first person. VR and flat players in the same match, with positional voice chat. Free and open source." />
-		<meta property="og:url" content="https://fugitivethegame.online/fugitive-3d.html" />
-		<meta property="og:image" content="https://fugitivethegame.online/images/f3d-hero.jpg" />
-		<meta property="og:locale" content="en_US" />
-		<meta property="og:site_name" content="Fugitive" />
-		<meta name="twitter:card" content="summary_large_image" />
+{% block title %}Fugitive 3D{% endblock %}
+{% block description %}Fugitive 3D is a free, open source multiplayer hide and seek game. VR and flat players share the same match, with positional voice chat and end-of-round replays. Windows, macOS, Linux, Android and VR.{% endblock %}
+{% block og_description %}Multiplayer hide and seek, in first person. VR and flat players in the same match, with positional voice chat. Free and open source.{% endblock %}
+{% block og_image %}/images/f3d-hero.jpg{% endblock %}
+{% block canonical %}/fugitive-3d{% endblock %}
+{% block nav_github %}https://github.com/FugitiveTheGame/Fugitive3D{% endblock %}
 
-		<script defer src="https://umami.grendelsdomain.com/script.js" data-website-id="b7326c8d-ad26-4cf0-a86d-df518b101593"></script>
-	</head>
-	<body class="is-preload">
-
-		<!-- Page Wrapper -->
-		<div id="page-wrapper">
-
-			<!-- Header -->
-			<header id="header">
-				<h1><a href="index.html">Fugitive</a></h1>
-				<nav id="nav">
-					<ul>
-						<li class="special">
-							<a href="#menu" class="menuToggle"><span>Menu</span></a>
-							<div id="menu">
-								<ul>
-									<li><a href="index.html">Home</a></li>
-									<li><a href="fugitive.html">Fugitive</a></li>
-									<li><a href="fugitive-3d.html">Fugitive 3D</a></li>
-									<li class="divider"><a href="/gamestats">Live stats</a></li>
-									<li><a href="https://discord.gg/2qk2Spe">Discord</a></li>
-									<li><a href="https://github.com/FugitiveTheGame/Fugitive3D">GitHub</a></li>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</nav>
-			</header>
+{% block content %}
 
 			<article id="main">
 				<header>
@@ -327,36 +280,12 @@
 					</div>
 				</section>
 			</article>
+{% endblock %}
 
-			<!-- Footer -->
-			<footer id="footer">
-				<div class="inner">
-					<ul class="icons">
+{% block footer_icons %}
 						<li><a href="https://github.com/FugitiveTheGame/Fugitive3D" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
 						<li><a href="https://discord.gg/2qk2Spe" class="icon brands fa-discord"><span class="label">Discord</span></a></li>
 						<li><a href="https://stumpy-dog-studios.itch.io/fugitive-3d" class="icon brands fa-itch-io"><span class="label">itch.io</span></a></li>
 						<li><a href="https://store.steampowered.com/app/1526650/Fugitive_3D/" class="icon brands fa-steam"><span class="label">Steam</span></a></li>
 						<li><a href="https://play.google.com/store/apps/details?id=com.darkrockstudios.games.fugitive3d" class="icon brands fa-google-play"><span class="label">Google Play</span></a></li>
-					</ul>
-					<ul class="copyright">
-						<li>Stumpy Dog Studios</li>
-						<li><a href="https://darkrockstudios.com/">Dark Rock Studios</a></li>
-						<li><a href="/gamestats">Live stats</a></li>
-						<li><a href="privacy.html">Privacy</a></li>
-						<li>Template: <a href="http://html5up.net">HTML5 UP</a></li>
-					</ul>
-				</div>
-			</footer>
-		</div>
-
-		<!-- Scripts -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery.scrollex.min.js"></script>
-		<script src="assets/js/jquery.scrolly.min.js"></script>
-		<script src="assets/js/browser.min.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/main.js"></script>
-
-	</body>
-</html>
+{% endblock %}
