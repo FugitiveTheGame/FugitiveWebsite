@@ -152,7 +152,9 @@ chmod 0640 "$HTPASSWD"
 
 step "Installing the PHP-FPM pool"
 install -m 0644 "$SRC_DIR/php-fpm-pool.conf" "$PHP_POOL"
-systemctl restart "php$PHP_VERSION-fpm"
+# Graceful reload (SIGUSR2) rather than restart: the adam and darkrockstudios
+# pools live in the same master process and should not drop requests for this.
+systemctl reload "php$PHP_VERSION-fpm"
 echo "pool listening on /run/php/php$PHP_VERSION-fpm-$SITE_USER.sock"
 
 step "Establishing the webhook secret"
