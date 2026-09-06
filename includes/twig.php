@@ -29,6 +29,12 @@ function fugitiveTwig(): \Twig\Environment
 	$twig = new \Twig\Environment($loader, [
 		'cache' => $usable ? $cache : false,
 		'autoescape' => 'html',
+		// Not optional. auto_reload defaults to the value of debug, i.e. false,
+		// and Twig keys the cache on the template *name* rather than its
+		// contents. Without this, an edited template keeps rendering from its
+		// stale compiled class: the deploy succeeds and the page never changes.
+		// The cost is one stat() per template per request.
+		'auto_reload' => true,
 	]);
 
 	return $twig;
