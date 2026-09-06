@@ -1,78 +1,211 @@
-{% extends "layout.html" %}
+<!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="en">
+	<head>
+		<title>Live stats</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content="Live numbers from the public Fugitive 3D servers: servers online, games played, average round length, and how often each side wins." />
+		<meta name="robots" content="noindex" />
+		<link rel="icon" href="/favicon.ico" sizes="any" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300..800;1,400&family=Overpass+Mono:wght@400;600&display=swap" />
+		<link rel="stylesheet" href="/assets/css/main.css" />
+		<link rel="stylesheet" href="/assets/css/fugitive.css" />
+		<link rel="stylesheet" href="/gamestats.css" />
 
-{% block head %}
-<link rel="stylesheet" type="text/css" href="gamestats.css">
+		<script defer src="https://umami.grendelsdomain.com/script.js" data-website-id="b7326c8d-ad26-4cf0-a86d-df518b101593"></script>
+	</head>
+	<body class="is-preload">
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+		<div id="page-wrapper">
 
-<script src="gamestats.js"></script>
+			<!-- Header -->
+			<header id="header">
+				<h1><a href="/index.html">Fugitive</a></h1>
+				<nav id="nav">
+					<ul>
+						<li class="special">
+							<a href="#menu" class="menuToggle"><span>Menu</span></a>
+							<div id="menu">
+								<ul>
+									<li><a href="/index.html">Home</a></li>
+									<li><a href="/fugitive.html">Fugitive</a></li>
+									<li><a href="/fugitive-3d.html">Fugitive 3D</a></li>
+									<li class="divider"><a href="/gamestats">Live stats</a></li>
+									<li><a href="https://discord.gg/2qk2Spe">Discord</a></li>
+									<li><a href="https://github.com/FugitiveTheGame">GitHub</a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</nav>
+			</header>
 
-<script>
-	function prepareCharts() {
-        let gamesPerDayLabels = [ {% for label in chart.chart_x_axis_labels %}"{{label}}", {% endfor %} ];
-        let gamesPerDayData = [{% for games in chart.chart_games_per_day %}{{games}}, {% endfor %}];
-        prepareGamesPerDay(gamesPerDayLabels, gamesPerDayData);
+			<article id="main">
+				<section class="wrapper style4">
+					<div class="inner">
+						<header class="major">
+							<h2>Live stats</h2>
+							<p>Reported by the public Fugitive 3D servers. Rounds shorter than ten seconds are treated as abandoned and left out.</p>
+						</header>
 
-        let winLabels = ["Cops", "Fugitives"];
-        let winData = [{{stats.cop_win_percentage}}, {{stats.fugitive_win_percentage}}];
-        prepareWinChart(winLabels, winData);
-	}
+						<ul class="tiles">
+							<li>
+								{% if stats.servers_known %}
+								<span class="tile-value">{{stats.servers_online}}</span>
+								<span class="tile-label">Servers online</span>
+								<span class="tile-note">{{stats.servers_in_game}} mid-game</span>
+								{% else %}
+								<span class="tile-value tile-value-none">&mdash;</span>
+								<span class="tile-label">Servers online</span>
+								<span class="tile-note">The server browser is not answering right now</span>
+								{% endif %}
+							</li>
+							<li>
+								<span class="tile-value">{{stats.valid_games}}</span>
+								<span class="tile-label">Games played</span>
+								<span class="tile-note">{{stats.total_games_played}} recorded in total</span>
+							</li>
+							<li>
+								<span class="tile-value">{{stats.week_valid_games}}</span>
+								<span class="tile-label">This week</span>
+								<span class="tile-note">{{stats.today_valid_games}} today</span>
+							</li>
+							<li>
+								<span class="tile-value">{{stats.average_num_players}}</span>
+								<span class="tile-label">Players per game</span>
+								<span class="tile-note">Average across all rounds</span>
+							</li>
+							<li>
+								<span class="tile-value">{{stats.average_game_length}}</span>
+								<span class="tile-label">Round length</span>
+								<span class="tile-note">Average, minutes and seconds</span>
+							</li>
+						</ul>
+					</div>
+				</section>
 
-    window.onload=prepareCharts;
-</script>
-{% endblock %}
+				<hr class="route" />
 
-{% block content %}
+				<section class="wrapper style1">
+					<div class="inner">
+						<header class="major">
+							<h2>Who wins</h2>
+							<p>Share of completed rounds won by each side.</p>
+						</header>
 
-<h1>Game Server Stats</h1>
-<div class="grid-container">
-	<div class="grid-item">
-		<div class="box-container">
-			<h2>Servers</h2>
-			<strong>Online:</strong> {{stats.servers_online}}<br />
-			<strong>In-Game:</strong> {{stats.servers_in_game}}
+						<div class="split" role="img" aria-label="Cops win {{stats.cop_win_percentage}} percent of rounds, fugitives win {{stats.fugitive_win_percentage}} percent.">
+							<div class="split-bar">
+								<div class="split-seg split-cop" style="width: {{stats.cop_win_percentage}}%;"></div>
+								<div class="split-seg split-fugitive" style="width: {{stats.fugitive_win_percentage}}%;"></div>
+							</div>
+							<dl class="split-key">
+								<div>
+									<dt><span class="swatch swatch-cop"></span>Cops</dt>
+									<dd>{{stats.cop_win_percentage}}%</dd>
+								</div>
+								<div>
+									<dt><span class="swatch swatch-fugitive"></span>Fugitives</dt>
+									<dd>{{stats.fugitive_win_percentage}}%</dd>
+								</div>
+							</dl>
+						</div>
+					</div>
+				</section>
+
+				<hr class="route" />
+
+				<section class="wrapper style4">
+					<div class="inner">
+						<header class="major">
+							<h2>Games per day</h2>
+							<p>Every recorded round, and the subset with three or more players.</p>
+						</header>
+
+						<ul class="chart-key">
+							<li><span class="swatch swatch-all"></span>All games</li>
+							<li><span class="swatch swatch-big"></span>Three or more players</li>
+						</ul>
+
+						<div id="game-chart-container">
+							<canvas id="game-chart" role="img" aria-label="Line chart of games played per day, with a second line for games with three or more players. The same numbers are in the table below."></canvas>
+						</div>
+
+						<details class="chart-table">
+							<summary>Show the numbers</summary>
+							<div class="table-wrapper">
+								<table>
+									<thead>
+										<tr>
+											<th>Day</th>
+											<th>All games</th>
+											<th>Three or more players</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for i in 0..(chart.chart_x_axis_labels|length - 1) %}
+										<tr>
+											<td class="num">{{chart.chart_x_axis_labels[i]}}</td>
+											<td class="num">{{chart.chart_games_per_day[i]}}</td>
+											<td class="num">{{chart.chart_big_games_per_day[i]}}</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</details>
+
+						<p class="stamp">Generated {{current_time_gmt}} UTC</p>
+					</div>
+				</section>
+			</article>
+
+			<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+					<ul class="icons">
+						<li><a href="https://github.com/FugitiveTheGame" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						<li><a href="https://discord.gg/2qk2Spe" class="icon brands fa-discord"><span class="label">Discord</span></a></li>
+						<li><a href="https://stumpy-dog-studios.itch.io/fugitive" class="icon brands fa-itch-io"><span class="label">itch.io</span></a></li>
+						<li><a href="https://store.steampowered.com/app/1526650/Fugitive_3D/" class="icon brands fa-steam"><span class="label">Steam</span></a></li>
+						<li><a href="https://godotengine.org/" class="icon solid fa-code"><span class="label">Made with Godot</span></a></li>
+					</ul>
+					<ul class="copyright">
+						<li>Stumpy Dog Studios</li>
+						<li><a href="/gamestats">Live stats</a></li>
+						<li><a href="/privacy.html">Privacy</a></li>
+						<li>Template: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
 		</div>
-	</div>
 
-	<div class="grid-item">
-		<div class="box-container">
-			<h2>Games Played</h2>
-			<strong>Total:</strong> {{stats.total_games_played}}<br />
-			<strong>Valid:</strong> {{stats.valid_games}}
-			<h2>This Week:</h2>
-			<strong>Total:</strong> {{stats.week_games_played}}<br />
-			<strong>Valid:</strong> {{stats.week_valid_games}}
-			<h2>Today:</h2>
-			<strong>Total:</strong> {{stats.today_games_played}}<br />
-			<strong>Valid:</strong> {{stats.today_valid_games}}
-		</div>
-	</div>
+		<script src="/assets/js/jquery.min.js"></script>
+		<script src="/assets/js/jquery.scrollex.min.js"></script>
+		<script src="/assets/js/jquery.scrolly.min.js"></script>
+		<script src="/assets/js/browser.min.js"></script>
+		<script src="/assets/js/breakpoints.min.js"></script>
+		<script src="/assets/js/util.js"></script>
+		<script src="/assets/js/main.js"></script>
 
-	<div class="grid-item">
-		<div class="box-container">
-			<h2>Win Percentage</h2>
-			<!--<strong>Cops:</strong> {{stats.cop_win_percentage}}%
-			<strong>Fugitives:</strong> {{stats.fugitive_win_percentage}}%<br />-->
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+		<script src="/gamestats.js"></script>
+		<script>
+			window.addEventListener('load', function () {
+				prepareGamesPerDay(
+					[{% for label in chart.chart_x_axis_labels %}"{{label}}",{% endfor %}],
+					[{% for games in chart.chart_games_per_day %}{{games}},{% endfor %}],
+					[{% for games in chart.chart_big_games_per_day %}{{games}},{% endfor %}]
+				);
+			});
+		</script>
 
-			<canvas id="win-chart" style="max-width:300px; margin: auto;"></canvas>
-		</div>
-	</div>
-
-	<div class="grid-item">
-		<div class="box-container">
-			<h2>Game Info</h2>
-			<strong>Avg. Players:</strong> {{stats.average_num_players}}<br />
-			<strong>Avg. Length:</strong> {{stats.average_game_length}}<br />
-		</div>
-	</div>
-</div>
-
-<div id="game-chart-container">
-	<div class="box-container">
-		<h2>Chart</h2>
-		<canvas id="game-chart"></canvas>
-	</div>
-</div>
-
-<h2>{{current_time_gmt}} UTC</h2>
-{% endblock %}
+	</body>
+</html>

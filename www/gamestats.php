@@ -20,30 +20,42 @@ class Game
 $mondayTs = mktime(0, 0, 0, date("n"), date("j") - date("N"));
 $todayTs = mktime(0, 0, 0);
 
-$json = file_get_contents("http://repository.fugitivethegame.online/servers");
-$servers = json_decode($json);
-$numServers = count($servers);
-//echo("Servers Online: $numServers<br />");
-$numInGameServers = 0;
-foreach($servers as $server)
+$serverRepoUrl = "http://repository.fugitivethegame.online/servers";
+$serverRepoContext = stream_context_create(['http' => ['timeout' => 4, 'ignore_errors' => true]]);
+$json = @file_get_contents($serverRepoUrl, false, $serverRepoContext);
+$servers = $json === false ? null : json_decode($json);
+
+// The repository is a separate host and may be down; the rest of the page
+// comes from our own database and stays useful without it.
+$serversKnown = is_array($servers);
+$numServers = $serversKnown ? count($servers) : null;
+$numInGameServers = null;
+if ($serversKnown)
 {
-	if($server->is_joinable == false)
+	$numInGameServers = 0;
+	foreach($servers as $server)
 	{
-		$numInGameServers++;
+		if($server->is_joinable == false)
+		{
+			$numInGameServers++;
+		}
 	}
 }
-//echo("Servers In-Game: $numInGameServers<br />");
+else
+{
+	error_log("Server repository unreachable: $serverRepoUrl");
+}
 
 $keys = getKeys();
 $db = getDb( $keys );
 
-
 $feedback_results = $db->feedback()->select( "*" )->where( "new", "1" );
-$numNewFeedback = count($feedback_results);
+$numNewFeedback = $feedback_results->count("*");//count($feedback_results);
+
 //echo("New Feedback: $numNewFeedback<br />");
 
 $crash_results = $db->feedback()->select( "*" )->where( "description LIKE ? AND new = ?", array("%[CRASH DETECTED]%", "1") );
-$numNewCrash = count($crash_results);
+$numNewCrash = $crash_results->count("*");//count($crash_results);
 //echo("New Crash Reports: $numNewCrash<br />");
 
 $averageNumPlayers = 0;
@@ -54,7 +66,7 @@ while( $row = $start_event_results->fetch() )
 {
 	$averageNumPlayers += $row['num_players'];
 }
-$averageNumPlayers = round($averageNumPlayers / $numStartEvents, 2);
+$averageNumPlayers = $numStartEvents > 0 ? round($averageNumPlayers / $numStartEvents, 2) : 0;
 
 $event_results = $db->server_events()->select( "*" )->where( "event_name", "game_end" );
 
@@ -136,10 +148,19 @@ foreach( $games as $index=>$game )
 	*/
 }
 
-$copWinPercent = round($copWins / $numValidGames, 3) * 100.0;
-$fugitiveWinPercent = round($fugitiveWins / $numValidGames, 3) * 100.0;
+if( $numValidGames > 0 )
+{
+	$copWinPercent = round($copWins / $numValidGames, 3) * 100.0;
+	$fugitiveWinPercent = round($fugitiveWins / $numValidGames, 3) * 100.0;
+	$seconds = floor($averageGameLength / $numValidGames);
+}
+else
+{
+	$copWinPercent = 0;
+	$fugitiveWinPercent = 0;
+	$seconds = 0;
+}
 
-$seconds = floor($averageGameLength / $numValidGames);
 $mins = floor($seconds / 60 % 60);
 $secs = floor($seconds % 60);
 $averageGameLengthStr = sprintf('%02d:%02d', $mins, $secs);
@@ -154,6 +175,7 @@ $stats = [
 	'average_num_players' => $averageNumPlayers,
 	'cop_win_percentage' => $copWinPercent,
 	'fugitive_win_percentage' => $fugitiveWinPercent,
+	'servers_known' => $serversKnown,
 	'servers_online' => $numServers,
 	'servers_in_game' => $numInGameServers,
 	'week_games_played' => $numWeeklyGames,
@@ -168,6 +190,7 @@ $current_time_gmt = $now->format('H:i:s d M Y');
 $chart = [
 	'chart_x_axis_labels' => $chartData['labels'],
 	'chart_games_per_day' => $chartData['gamesPerDay'],
+	'chart_big_games_per_day' => $chartData['bigGamesPerDay'],
 ];
 
 echo $twig->render('gamestats.html', ['stats' => $stats, 'chart' => $chart, 'current_time_gmt' => $current_time_gmt] );
@@ -201,9 +224,14 @@ function getDaysSinceZero($timestamp)
 function getGamesPerDay($games)
 {
 	$numGames = count( $games );
+	if( $numGames === 0 )
+	{
+		return ['labels' => [], 'gamesPerDay' => [], 'bigGamesPerDay' => []];
+	}
+
 	$firstGameDate = $games[0]->timestamp;
 	$lastGameDate = $games[ $numGames - 1 ]->timestamp;
-	$todayDate = mktime();
+	$todayDate = time();
 
 	$firstDay = getDaysSinceZero( $firstGameDate );
 	$lastDay = getDaysSinceZero( $lastGameDate );
@@ -214,26 +242,36 @@ function getGamesPerDay($games)
 	$labels = [];
 
 	$gamesPerDay = [];
+	$bigGamesPerDay = [];
 	for( $ii = 0; $ii < $numDays; ++$ii )
 	{
 		$gamesPerDay[ $firstDay + $ii ] = 0;
+		$bigGamesPerDay[ $firstDay + $ii ] = 0;
 		$labels[] = xAxisLabel( $firstGameDate + ($ii * 24 * 60 * 60) );
 	}
 
+	$BIG_GAME_SIZE = 3;
+
 	$curDay = -1;
 	$gamesThisDay = 0;
-
+	$bigGamesThisDay = 0;
 	foreach( $games as $game )
 	{
 		$day = getDaysSinceZero($game->timestamp);
 		if($day != $curDay)
 		{
 			$gamesPerDay[$day] = $gamesThisDay;
+			$bigGamesPerDay[$day] = $bigGamesThisDay;
+
 			$curDay = $day;
 			$gamesThisDay = 0;
+			$bigGamesThisDay = 0;
 		}
 
 		$gamesThisDay += 1;
+		if($game->numPlayers >= $BIG_GAME_SIZE) {
+			$bigGamesThisDay += 1;
+		}
 	}
 
 	// Save the last day
@@ -241,6 +279,7 @@ function getGamesPerDay($games)
 
 	$data['labels'] = $labels;
 	$data['gamesPerDay'] = array_values($gamesPerDay);
+	$data['bigGamesPerDay'] = array_values($bigGamesPerDay);
 
 	return $data;
 }

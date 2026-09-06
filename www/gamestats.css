@@ -1,21 +1,183 @@
-.grid-container {
-    display: grid;
-    grid-template-columns: auto auto auto auto;
+/* Live stats page. Loaded after fugitive.css. */
+
+:root {
+	--chart-all: #ab8f00;
+	--chart-big: #4a97cc;
+	--chart-cop: #d0434f;
 }
 
-#game-chart {
-    height: 400px;
-    max-height: 400px;
+/* Stat tiles */
+
+.tiles {
+	display: grid;
+	gap: 0;
+	grid-template-columns: repeat(5, 1fr);
+	list-style: none;
+	padding: 0;
+}
+
+.tiles > li {
+	border-left: solid 1px var(--hairline);
+	padding: 0 1.5em;
+}
+
+.tiles > li:first-child {
+	border-left: 0;
+	padding-left: 0;
+}
+
+.tile-value {
+	color: #fff;
+	display: block;
+	font-size: clamp(2.25rem, 4vw, 3.25rem);
+	font-variant-numeric: tabular-nums;
+	font-weight: 700;
+	letter-spacing: -0.03em;
+	line-height: 1.05;
+}
+
+.tile-value-none {
+	color: var(--chalk-dim);
+}
+
+.tile-label {
+	color: #fff;
+	display: block;
+	font-size: 1rem;
+	font-weight: 600;
+	margin-top: 0.35em;
+}
+
+.tile-note {
+	color: var(--chalk-dim);
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.4;
+	margin-top: 0.15em;
+}
+
+/* Win share — a proportion bar, not a two-slice pie */
+
+.split-bar {
+	display: flex;
+	gap: 2px;
+	height: 2.75em;
+	margin: 0 0 1.25em 0;
+	width: 100%;
+}
+
+.split-seg {
+	min-width: 2px;
+}
+
+.split-cop { background: var(--chart-cop); }
+.split-fugitive { background: var(--chart-all); }
+
+.split-key {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2.5em;
+	margin: 0;
+}
+
+.split-key dt {
+	align-items: center;
+	color: var(--chalk-dim);
+	display: flex;
+	font-size: 0.9375rem;
+	gap: 0.5em;
+}
+
+.split-key dd {
+	color: #fff;
+	font-size: 1.75rem;
+	font-variant-numeric: tabular-nums;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	margin: 0.1em 0 0 0;
+}
+
+.swatch {
+	display: inline-block;
+	flex: 0 0 auto;
+	height: 0.75em;
+	width: 0.75em;
+}
+
+.swatch-cop { background: var(--chart-cop); }
+.swatch-fugitive,
+.swatch-all { background: var(--chart-all); }
+.swatch-big { background: var(--chart-big); }
+
+/* Chart */
+
+.chart-key {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.75em;
+	list-style: none;
+	margin: 0 0 1.5em 0;
+	padding: 0;
+}
+
+.chart-key li {
+	align-items: center;
+	color: var(--chalk-dim);
+	display: flex;
+	font-size: 0.9375rem;
+	gap: 0.5em;
+	padding: 0;
 }
 
 #game-chart-container {
-    max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+	height: 22em;
+	margin: 0 0 2em 0;
+	position: relative;
+	width: 100%;
 }
 
-@media (max-width: 767px) {
-    .grid-container {
-        grid-template-columns: auto;
-    }
+.chart-table {
+	border-top: solid 1px var(--hairline);
+	padding-top: 1em;
+}
+
+.chart-table summary {
+	color: var(--chalk-dim);
+	cursor: pointer;
+	font-size: 0.9375rem;
+	margin-bottom: 1em;
+}
+
+.chart-table summary:hover { color: var(--tape); }
+
+.chart-table summary:focus-visible {
+	outline: 3px solid var(--tape);
+	outline-offset: 3px;
+}
+
+.chart-table .table-wrapper {
+	max-height: 26em;
+	overflow-y: auto;
+}
+
+.stamp {
+	color: var(--chalk-dim);
+	font-family: var(--mono);
+	font-size: 0.8125rem;
+	margin: 1.5em 0 0 0;
+}
+
+@media screen and (max-width: 1280px) {
+	.tiles { grid-template-columns: repeat(3, 1fr); row-gap: 2.5em; }
+	.tiles > li:nth-child(3n + 1) { border-left: 0; padding-left: 0; }
+}
+
+@media screen and (max-width: 736px) {
+	.tiles { grid-template-columns: 1fr 1fr; row-gap: 2em; }
+	.tiles > li:nth-child(3n + 1) { border-left: solid 1px var(--hairline); padding-left: 1.5em; }
+	.tiles > li:nth-child(2n + 1) { border-left: 0; padding-left: 0; }
+
+	#game-chart-container { height: 16em; }
+
+	.split-key { gap: 1.75em; }
 }
