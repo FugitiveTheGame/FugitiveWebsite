@@ -217,12 +217,18 @@ else
 fi
 
 step "Smoke test"
+# certbot has already added the 80->443 redirect by this point, so follow it.
+# --resolve keeps both hops pointed at this box rather than out over the internet.
+probe() {
+	curl -sk -o /dev/null -w '%{http_code}' -L \
+		--resolve "$DOMAIN:80:127.0.0.1" \
+		--resolve "$DOMAIN:443:127.0.0.1" \
+		"http://$DOMAIN$1" 2>/dev/null || echo ERR
+}
 for path in / /fugitive /fugitive-3d /latest_version.json /gamestats; do
-	code="$(curl -s -o /dev/null -w '%{http_code}' -H "Host: $DOMAIN" "http://127.0.0.1$path" || echo ERR)"
-	printf '  %-24s %s\n' "$path" "$code"
+	printf '  %-24s %s\n' "$path" "$(probe "$path")"
 done
-code="$(curl -s -o /dev/null -w '%{http_code}' -H "Host: $DOMAIN" "http://127.0.0.1/management/" || echo ERR)"
-printf '  %-24s %s (401 means the password is working)\n' "/management/" "$code"
+printf '  %-24s %s (401 means the password is working)\n' "/management/" "$(probe /management/)"
 
 cat <<EOF
 
