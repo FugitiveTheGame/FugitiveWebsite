@@ -671,6 +671,21 @@ ul.actions.special {
 	width: 100%;
 }
 
+/* itch.io widget. Its layout is a fixed 552px, so narrow screens scroll it
+   rather than shrinking the iframe and clipping the buttons inside. */
+.itch-embed {
+	margin: 0 0 2.5em 0;
+	max-width: 100%;
+	overflow-x: auto;
+}
+
+.itch-embed iframe {
+	border: solid 1px var(--hairline);
+	display: block;
+	height: 167px;
+	width: 552px;
+}
+
 /* Tables — real tabular data, so mono and tabular figures */
 
 .table-wrapper {
