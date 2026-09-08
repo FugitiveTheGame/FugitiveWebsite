@@ -1,145 +1,100 @@
-/* Table Styles */
+/*
+	The feedback list. Each report is one entry with a status edge on the left:
+	yellow when it is unread, red when it is an unread crash.
+*/
 
-.table-wrapper {
-    margin: 10px 70px 70px;
-    box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.2);
+.reports {
+	list-style: none;
+	margin: 0.9rem 0 0;
+	padding: 0;
 }
 
-.fl-table {
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight: normal;
-    border: none;
-    border-collapse: collapse;
-    width: 100%;
-    max-width: 100%;
-    white-space: nowrap;
-    background-color: white;
+.report {
+	background: var(--slab);
+	border-bottom: 1px solid var(--hairline);
+	border-left: 3px solid transparent;
+	padding: 1.15rem 1.35rem 1.1rem;
 }
 
-.fl-table td, .fl-table th {
-    text-align: center;
-    padding: 8px;
+.report.is-new {
+	background: var(--slab-lit);
+	border-left-color: var(--tape);
 }
 
-.fl-table td {
-    border-right: 1px solid #f8f8f8;
-    font-size: 12px;
-    white-space: normal;
+.report.is-new.is-crash {
+	border-left-color: var(--siren);
 }
 
-.fl-table thead th {
-    color: #ffffff;
-    background: #5526ac;
+.report-head {
+	align-items: baseline;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6rem;
 }
 
-
-.fl-table thead th:nth-child(odd) {
-    color: #ffffff;
-    background: #324960;
+.report-id {
+	color: var(--chalk-faint);
+	font-family: var(--mono);
+	font-size: 0.8125rem;
 }
 
-.fl-table tr:nth-child(even) {
-    background: #F8F8F8;
+.report-who {
+	color: #fff;
+	font-weight: 600;
 }
 
-.fl-table tbody tr:hover {
-    background: #ffcb79;
-    border: 1px solid black;
+.report:not(.is-new) .report-who {
+	color: var(--chalk);
 }
 
-
-/* Responsive */
-
-@media (max-width: 767px) {
-    .fl-table {
-        display: block;
-        width: 100%;
-    }
-
-    .table-wrapper {
-        margin: 10px 10px 10px;
-    }
-
-    .table-wrapper:before {
-        content: "Scroll horizontally >";
-        display: block;
-        text-align: right;
-        font-size: 11px;
-        color: white;
-        padding: 0 0 10px;
-    }
-
-    .fl-table thead, .fl-table tbody, .fl-table thead th {
-        display: block;
-    }
-
-    .fl-table thead th:last-child {
-        border-bottom: none;
-    }
-
-    .fl-table thead {
-        float: left;
-    }
-
-    .fl-table tbody {
-        width: auto;
-        position: relative;
-        overflow-x: auto;
-    }
-
-    .fl-table td, .fl-table th {
-        padding: 20px .625em .625em .625em;
-        height: 60px;
-        vertical-align: middle;
-        box-sizing: border-box;
-        overflow-x: hidden;
-        overflow-y: auto;
-        width: 120px;
-        font-size: 13px;
-        text-overflow: ellipsis;
-    }
-
-    .fl-table thead th {
-        text-align: left;
-        border-bottom: 1px solid #f7f7f9;
-    }
-
-    .fl-table tbody tr {
-        display: table-cell;
-    }
-
-    .fl-table tbody tr:nth-child(odd) {
-        background: none;
-    }
-
-    .fl-table tr:nth-child(even) {
-        background: transparent;
-    }
-
-    .fl-table tr td:nth-child(odd) {
-        background: #F8F8F8;
-        border-right: 1px solid #E6E4E4;
-    }
-
-    .fl-table tr td:nth-child(even) {
-        border-right: 1px solid #E6E4E4;
-    }
-
-    .fl-table tbody td {
-        display: block;
-        text-align: center;
-    }
+.chip-crash {
+	background: rgba(181, 20, 43, 0.18);
+	border: 1px solid rgba(255, 113, 131, 0.45);
+	border-radius: 2px;
+	color: var(--siren-lit);
+	font-size: 0.75rem;
+	font-weight: 600;
+	padding: 0.05rem 0.4rem;
 }
 
-.destructive-button {
-    background-color: #db0d30; /* Green */
+.report-when {
+	color: var(--chalk-faint);
+	font-size: 0.8125rem;
+	margin-left: auto;
 }
 
-.new-report {
-    background-color: #92d0ff !important;
+.report-body {
+	margin: 0.45rem 0 0;
+	max-width: 74ch;
 }
 
-.crash-detected {
-    background-color: #ba8e8e !important;
+.report:not(.is-new) .report-body {
+	color: var(--chalk-dim);
+}
+
+.report.is-empty {
+	color: var(--chalk-dim);
+}
+
+.report-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	justify-content: flex-end;
+	margin-top: 0.85rem;
+}
+
+@media (max-width: 640px) {
+	.report {
+		padding: 1rem 1rem 0.95rem;
+	}
+
+	.report-when {
+		flex-basis: 100%;
+		margin-left: 0;
+	}
+
+	.report-actions {
+		justify-content: flex-start;
+	}
 }

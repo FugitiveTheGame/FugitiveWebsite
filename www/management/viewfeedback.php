@@ -12,20 +12,41 @@ $db = getDb( $keys );
 
 $feedback_results = $db->feedback()->select( "*" )->order('date_reported DESC');
 
+$crash_marker = '[CRASH DETECTED]';
+
 $feedback = array();
+$numNew = 0;
+$numCrashes = 0;
 while( $row = $feedback_results->fetch() )
 {
-	$newCrash = (strpos($row['description'], '[CRASH DETECTED]') === 0) && $row['new'] == 1;
+	$isCrash = strpos($row['description'], $crash_marker) === 0;
+	$description = $isCrash
+		? trim(substr($row['description'], strlen($crash_marker)))
+		: $row['description'];
+
+	if( $row['new'] == 1 )
+	{
+		$numNew++;
+		if( $isCrash )
+		{
+			$numCrashes++;
+		}
+	}
 
 	$feedback[] = [
 		'id' => $row['id'],
-		'crash_detected' => $newCrash,
+		'crash' => $isCrash,
 		'name' => $row['user_name'],
-		'description' => $row['description'],
+		'description' => $description,
 		'date_reported' => $row['date_reported'],
 		'has_logs' => ($row['logs'] != null),
 		'new' => $row['new'],
 	];
 }
 
-echo $twig->render('view_feedback.html', ['feedback' => $feedback] );
+echo $twig->render('view_feedback.html',
+	[
+		'feedback' => $feedback,
+		'new_feedback' => $numNew,
+		'new_crashes' => $numCrashes
+	] );

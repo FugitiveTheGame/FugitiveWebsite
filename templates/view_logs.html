@@ -1,33 +1,54 @@
 {% extends "layout.html" %}
+{% set page = 'feedback' %}
+
+{% block title %}Logs{% endblock %}
 
 {% block head %}
-<style>
-	textarea {
-		width: 100%;
-		height: 80vh;
-		box-sizing: border-box;
-	}
-</style>
+
+<link rel="stylesheet" type="text/css" href="/management/css/view_logs.css">
 
 <script>
-	function copy_logs() {
-        $('#logs').select();
+	document.addEventListener('click', async function (event) {
+		if (event.target.id !== 'copy') {
+			return;
+		}
 
-        //el.setSelectionRange(0, 99999); /*For mobile devices*/
-        document.execCommand('copy');
-
-        alert('Logs copied to clip board');
-    }
+		var status = document.getElementById('status');
+		try {
+			await navigator.clipboard.writeText(document.getElementById('logs').textContent);
+			status.textContent = 'Copied the logs to the clipboard.';
+			status.classList.remove('is-error');
+		} catch (error) {
+			status.textContent = 'Could not reach the clipboard: ' + error.message;
+			status.classList.add('is-error');
+		}
+		status.classList.add('is-visible');
+	});
 </script>
 {% endblock %}
 
 {% block content %}
-<br />
-<a href="viewfeedback">Go to Feedback</a>
-<br />
-<button onclick="copy_logs()">Copy</button>
-<br />
-<textarea id="logs">
-	{{logs}}
-</textarea>
+<div class="page-head">
+	<h1>Logs</h1>
+	<p>
+		{%- if logs -%}
+			Attached to report #{{ id }} from {{ name }}.
+		{%- elseif id -%}
+			Report #{{ id }} came in without any logs.
+		{%- else -%}
+			Open this page from a report to read its logs.
+		{%- endif -%}
+	</p>
+</div>
+
+<hr class="route">
+
+<p class="status" id="status" role="status"></p>
+
+<div class="log-actions">
+	<a class="btn" href="viewfeedback">Back to feedback</a>
+	{% if logs %}<button class="btn" id="copy">Copy logs</button>{% endif %}
+</div>
+
+{% if logs %}<pre class="logdump" id="logs">{{ logs }}</pre>{% endif %}
 {% endblock %}

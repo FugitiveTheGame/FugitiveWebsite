@@ -10,13 +10,20 @@ $twig = new \Twig\Environment($loader);
 $keys = getKeys();
 $db = getDb( $keys );
 
-if(is_numeric($_GET['id']))
+if(is_numeric($_GET['id'] ?? ''))
 {
 	$feedback_id = $_GET['id'];
 
 	$feedback = $db->feedback[$feedback_id];
 
-	$logs = $feedback['logs'];
-
-	echo $twig->render('view_logs.html', ['logs' => $logs] );
+	echo $twig->render('view_logs.html',
+		[
+			'id' => $feedback_id,
+			'name' => $feedback ? $feedback['user_name'] : null,
+			'logs' => $feedback ? $feedback['logs'] : null
+		] );
+}
+else
+{
+	echo $twig->render('view_logs.html', ['id' => null, 'name' => null, 'logs' => null] );
 }

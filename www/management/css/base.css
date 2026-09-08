@@ -1,103 +1,224 @@
-* {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+/*
+	Management dashboard — shared chrome.
+	Palette and type come from the site skin (assets/css/fugitive.css) so the
+	admin reads as the same place as fugitivethegame.online.
+*/
+
+:root {
+	--asphalt: #14161c;
+	--slab: #191c24;
+	--slab-lit: #1f232d;
+	--tape: #f5d200;
+	--siren: #b5142b;
+	--siren-lit: #ff7183;
+	--chalk: #edeae3;
+	--chalk-dim: rgba(237, 234, 227, 0.62);
+	--chalk-faint: rgba(237, 234, 227, 0.52);
+	--hairline: rgba(237, 234, 227, 0.14);
+	--sans: "Overpass", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	--mono: "Overpass Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+	--road: repeating-linear-gradient(to right, var(--tape) 0 42px, transparent 42px 72px);
+
+	color-scheme: dark;
+}
+
+*, *::before, *::after {
+	box-sizing: border-box;
 }
 
 body {
-    font-family: Helvetica;
-    -webkit-font-smoothing: antialiased;
-    background: rgb(2,0,36);
-    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,159,255,1) 100%);
+	background-color: var(--asphalt);
+	color: var(--chalk);
+	font-family: var(--sans);
+	font-size: 16px;
+	line-height: 1.6;
+	margin: 0;
+	-webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+	color: #fff;
+	font-weight: 700;
+	letter-spacing: -0.015em;
+	line-height: 1.1;
+	margin: 0;
 }
 
 h1 {
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: white;
-    padding: 30px 0;
-    text-shadow: 1px 1px #1d242a;
+	font-size: clamp(1.75rem, 3.5vw, 2.5rem);
 }
 
 h2 {
-    letter-spacing: 1px;
-    color: white;
-}
-
-.box-container {
-    margin: 16px;
-    padding: 16px;
-    border-radius: 4px;
-    /*background-color: #f66a6a;*/
-    background: rgb(251,70,10);
-    background: linear-gradient(0deg, rgba(251,70,10,1) 0%, rgba(121,18,9,1) 95%, rgba(0,159,255,1) 100%);
-    color: white;
-
-    box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.2);
+	font-size: 1.125rem;
+	letter-spacing: -0.005em;
 }
 
 a {
-    color: white;
+	color: inherit;
 }
 
-a:hover {
-    color: orange;
+:focus-visible {
+	outline: 3px solid var(--tape);
+	outline-offset: 2px;
 }
 
-a:active {
-    color: red;
+/* Top bar */
+
+.topbar {
+	background: rgba(20, 22, 28, 0.94);
+	border-bottom: 1px solid var(--hairline);
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	backdrop-filter: blur(6px);
 }
 
-button {
-    background-color: #4c79af;
-    border: none;
-    border-radius: 2px;
-    color: white;
-    padding: 8px 8px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 12px;
+.topbar-inner {
+	align-items: center;
+	display: flex;
+	gap: 1.5rem;
+	height: 3.4rem;
+	margin: 0 auto;
+	max-width: 72rem;
+	padding: 0 1.5rem;
+	width: 100%;
 }
 
-button:hover {
-    color: #0071ff;
-    background-color: #ff995f;
+.topbar-mark {
+	color: var(--tape);
+	font-weight: 700;
+	letter-spacing: -0.01em;
+	text-decoration: none;
 }
 
-button:active {
-    color: #ff7314;
-    background-color: #4c79af;
+.topbar-nav {
+	display: flex;
+	gap: 1.25rem;
+	margin-left: auto;
 }
 
-button.subtle {
-    background-color: #bdd8f8;
+.topbar-nav a {
+	color: var(--chalk-dim);
+	font-size: 0.9375rem;
+	font-weight: 600;
+	text-decoration: none;
+	transition: color 0.15s ease;
 }
 
-.centered {
-    position: fixed; /* or absolute */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.topbar-nav a:hover {
+	color: var(--chalk);
 }
 
-.home-button {
-
+.topbar-nav a[aria-current="page"] {
+	color: var(--tape);
 }
 
-@media (max-width: 767px) {
-    h1 {
-        padding: 0;
-    }
+/* Page shell */
 
-    h2 {
-        padding: 0;
-    }
+.shell {
+	margin: 0 auto;
+	max-width: 72rem;
+	padding: 2.75rem 1.5rem 5rem;
+	width: 100%;
+}
 
-    .box-container {
-        margin: 8px;
-        padding: 8px;
-        border-radius: 4px;
-    }
+.page-head p {
+	color: var(--chalk-dim);
+	margin: 0.5rem 0 0;
+	max-width: 60ch;
+}
+
+/* The road line, borrowed from the public site, is the top edge of the list */
+
+.route {
+	background: var(--road);
+	border: 0;
+	height: 4px;
+	margin: 1.75rem 0 0;
+	width: 100%;
+}
+
+/* Buttons */
+
+.btn {
+	background: transparent;
+	border: 1px solid var(--hairline);
+	border-radius: 2px;
+	color: var(--chalk-dim);
+	cursor: pointer;
+	font-family: inherit;
+	font-size: 0.875rem;
+	font-weight: 600;
+	padding: 0.35rem 0.7rem;
+	text-decoration: none;
+	transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+	white-space: nowrap;
+}
+
+.btn:hover {
+	border-color: rgba(245, 210, 0, 0.5);
+	color: var(--chalk);
+}
+
+.btn[disabled] {
+	cursor: default;
+	opacity: 0.45;
+}
+
+.btn-danger {
+	border-color: rgba(255, 113, 131, 0.28);
+	color: var(--siren-lit);
+}
+
+.btn-danger:hover {
+	border-color: var(--siren-lit);
+	color: var(--siren-lit);
+}
+
+.btn-danger.is-armed {
+	background: var(--siren);
+	border-color: var(--siren);
+	color: #fff;
+}
+
+/* Action feedback */
+
+.status {
+	border-left: 3px solid var(--tape);
+	background: rgba(245, 210, 0, 0.08);
+	display: none;
+	font-size: 0.9375rem;
+	margin: 1.5rem 0 0;
+	padding: 0.7rem 1rem;
+}
+
+.status.is-visible {
+	display: block;
+}
+
+.status.is-error {
+	background: rgba(181, 20, 43, 0.16);
+	border-left-color: var(--siren-lit);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	* {
+		transition: none !important;
+	}
+}
+
+@media (max-width: 640px) {
+	.topbar-inner,
+	.shell {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+
+	.topbar-nav {
+		gap: 0.9rem;
+	}
+
+	.shell {
+		padding-top: 2rem;
+	}
 }

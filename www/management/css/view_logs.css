@@ -1,0 +1,23 @@
+/* Crash log viewer. */
+
+.log-actions {
+	display: flex;
+	gap: 0.5rem;
+	margin-top: 1.75rem;
+}
+
+.logdump {
+	background: var(--slab);
+	border: 1px solid var(--hairline);
+	border-left: 3px solid var(--siren);
+	color: var(--chalk-dim);
+	font-family: var(--mono);
+	font-size: 0.8125rem;
+	line-height: 1.7;
+	margin: 1rem 0 0;
+	max-height: 70vh;
+	overflow: auto;
+	padding: 1.1rem 1.35rem;
+	tab-size: 4;
+	white-space: pre;
+}

@@ -3,57 +3,82 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../../includes/utils.php';
 
-$keys = getKeys();
-$db = getDb( $keys );
+header('Content-Type: application/json');
 
-$action = $_GET['action'];
-if(!empty($action) && is_numeric($_GET['id']))
+// Reads come in on the query string, writes in a POST body.
+$isPost = $_SERVER['REQUEST_METHOD'] === 'POST';
+$params = $isPost ? $_POST : $_GET;
+$action = $params['action'] ?? '';
+$id = (string) ($params['id'] ?? '');
+
+$writes = ['markread', 'markunread', 'delete'];
+
+if (in_array($action, $writes, true) && !$isPost)
 {
-	$feedback_id = $_GET['id'];
+	fail(405, "'$action' has to be sent as a POST.");
+}
 
-	if($action == "logs")
+if (!ctype_digit($id))
+{
+	fail(400, "'$id' is not a feedback id.");
+}
+
+try
+{
+	$keys = getKeys();
+	$db = getDb($keys);
+
+	$feedback_item = $db->feedback[(int) $id];
+
+	if (!$feedback_item)
 	{
-		$feedback_item = $db->feedback[$feedback_id];
-		$logs = $feedback_item['logs'];
-
-		$response = [
-			"logs" => $logs
-		];
-
-		header('Content-Type: application/json');
-		echo json_encode($response);
+		fail(404, "Feedback $id is not in the database any more. Reload the page.");
 	}
-	elseif($action == "markread")
+
+	if ($action == "logs")
 	{
-		$feedback_item = $db->feedback[$feedback_id];
-		$feedback_item["new"] = 0;
-		$feedback_item->update();
+		echo json_encode(["logs" => $feedback_item['logs']]);
+	}
+	elseif ($action == "markread" || $action == "markunread")
+	{
+		$feedback_item["new"] = ($action == "markread" ? 0 : 1);
+
+		if ($feedback_item->update() === false)
+		{
+			fail(500, "The database refused to update feedback $id.");
+		}
 
 		return_success();
 	}
-	elseif($action == "markunread")
+	elseif ($action == "delete")
 	{
-		$feedback_item = $db->feedback[$feedback_id];
-		$feedback_item["new"] = 1;
-		$feedback_item->update();
+		// delete() returns the number of rows it removed, or false on error.
+		if (!$feedback_item->delete())
+		{
+			fail(500, "The database refused to delete feedback $id.");
+		}
 
 		return_success();
 	}
-	elseif($action == "delete")
+	else
 	{
-		$feedback_item = $db->feedback[$feedback_id];
-		$feedback_item->delete();
-
-		return_success();
+		fail(400, "'$action' is not something this page can do.");
 	}
+}
+catch (Throwable $e)
+{
+	error_log("management action '$action' on feedback $id failed: " . $e->getMessage());
+	fail(500, $e->getMessage());
 }
 
 function return_success()
 {
-	$response = [
-		"success" => true
-	];
+	echo json_encode(["success" => true]);
+}
 
-	header('Content-Type: application/json');
-	echo json_encode($response);
+function fail($status, $message)
+{
+	http_response_code($status);
+	echo json_encode(["error" => $message]);
+	exit;
 }

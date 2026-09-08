@@ -1,10 +1,36 @@
-div.large_box {
+/* Management home: the two places worth going. */
 
+.destinations {
+	list-style: none;
+	margin: 0.9rem 0 0;
+	padding: 0;
 }
 
-@media (max-width: 767px) {
-    div.large_box {
-        width: 90vw;
-        margin: auto;
-    }
+.destination {
+	background: var(--slab);
+	border-bottom: 1px solid var(--hairline);
+	border-left: 3px solid transparent;
+	display: block;
+	padding: 1.4rem 1.35rem;
+	text-decoration: none;
+	transition: background-color 0.15s ease, border-left-color 0.15s ease;
+}
+
+.destination p {
+	color: var(--chalk-dim);
+	margin: 0.3rem 0 0;
+}
+
+.destination.is-flagged {
+	background: var(--slab-lit);
+	border-left-color: var(--tape);
+}
+
+.destination:hover {
+	background: var(--slab-lit);
+	border-left-color: var(--tape);
+}
+
+.destination:hover h2 {
+	color: var(--tape);
 }

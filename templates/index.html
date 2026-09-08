@@ -1,14 +1,38 @@
 {% extends "layout.html" %}
+{% set page = 'home' %}
+
+{% block title %}Management{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="/management/css/index.css">
 {% endblock %}
 
 {% block content %}
-<h1>Fugitive 3D Management</h1>
-<div class="box-container centered large_box">
-	<h1>Navigation</h1>
-	<a href="/gamestats"><h2>Game Stats</h2></a>
-	<a href="viewfeedback"><h2>Feedback [new: {{new_feedback}}|{{new_crashes}}]</h2></a>
+<div class="page-head">
+	<h1>Management</h1>
+	<p>What players and game servers have sent back from Fugitive.</p>
 </div>
+
+<hr class="route">
+
+<ul class="destinations">
+	<li>
+		<a class="destination{% if new_feedback > 0 %} is-flagged{% endif %}" href="/management/viewfeedback">
+			<h2>Feedback</h2>
+			<p>
+				{%- if new_feedback > 0 -%}
+					{{ new_feedback }} unread{% if new_crashes > 0 %}, {{ new_crashes }} of them {{ new_crashes == 1 ? 'a crash' : 'crashes' }}{% endif %}.
+				{%- else -%}
+					Nothing unread.
+				{%- endif -%}
+			</p>
+		</a>
+	</li>
+	<li>
+		<a class="destination" href="/gamestats">
+			<h2>Game stats</h2>
+			<p>Rounds played, win rates and which servers are seeing traffic.</p>
+		</a>
+	</li>
+</ul>
 {% endblock %}

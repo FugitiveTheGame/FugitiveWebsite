@@ -2,19 +2,34 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Fugitive 3D</title>
+		<title>{% block title %}Management{% endblock %} — Fugitive</title>
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="robots" content="noindex, nofollow" />
 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;700&family=Overpass+Mono:wght@400;600&display=swap" />
 		<link rel="stylesheet" type="text/css" href="/management/css/base.css">
 
 		{% block head %}
 		{% endblock %}
 	</head>
 	<body>
-		<a href="/management" class="home-button">&laquo; Management Home</a>
-		{% block content %}
-		{% endblock %}
+		<header class="topbar">
+			<div class="topbar-inner">
+				<a class="topbar-mark" href="/management">Fugitive</a>
+				<nav class="topbar-nav">
+					<a href="/management/viewfeedback"{% if page == 'feedback' %} aria-current="page"{% endif %}>Feedback</a>
+					<a href="/gamestats">Game stats</a>
+					<a href="/">View site</a>
+				</nav>
+			</div>
+		</header>
+
+		<main class="shell">
+			{% block content %}
+			{% endblock %}
+		</main>
 	</body>
 </html>
